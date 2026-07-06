@@ -8,8 +8,10 @@ deck = ["1S", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS",
 
 def play_game():
     deck, player_hand, top_of_discard_pile = initial_set_up()  
-    print_player_hand(player_hand)  
-    deck, player_hand, top_of_discard_pile = player_turn(1, player_hand, deck, top_of_discard_pile)
+    print_player_hand(player_hand)
+
+    while True:  
+        deck, player_hand, top_of_discard_pile = player_turn(1, player_hand, deck, top_of_discard_pile)
 
 
 def initial_set_up():
@@ -36,7 +38,7 @@ def print_player_hand(cards):
 # add validation for where to pick card up from and if the discarded card is a valid card
 def player_turn(playerNo, hand, deck, discard):
     print()
-    print("It is player ", playerNo,"'s turn")
+    print("It is player", playerNo,"'s turn")
     print_player_hand(hand)
     print("You must either take a card from the top of the deck or the card on the top of the discard pile")
     print("The current card on top of the discard pile is ", discard)
@@ -54,6 +56,11 @@ def player_turn(playerNo, hand, deck, discard):
     print_player_hand(hand)
     print("You must now choose a card to discard")
     discard = input("-> ")
+    
+    for i in range(len(hand)):
+        if hand[i] == discard:
+            hand.remove(discard)
+            break
 
     return deck, hand, discard
 
