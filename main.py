@@ -7,7 +7,8 @@ deck = ["1S", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS",
 
 
 def play_game():
-    deck, player_hand = initial_set_up()    
+    deck, player_hand = initial_set_up()  
+    print_player_hand(player_hand)  
 
 
 def initial_set_up():
@@ -19,6 +20,13 @@ def initial_set_up():
         player_hand.append(deck.pop(0))
 
     return deck, player_hand
+
+
+def print_player_hand(cards):
+    hand = ""
+    for i in range(len(cards)):
+        hand += cards[i] + "   "
+    print(hand)
 
 
 play_game()
