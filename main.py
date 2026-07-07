@@ -13,7 +13,8 @@ def play_game():
     deck, players, top_of_discard_pile = initial_set_up(players)  
 
     while True:  
-        deck, players, top_of_discard_pile = player_turn(player_turn, players, deck, top_of_discard_pile)
+        deck, players, top_of_discard_pile = player_turn(players_turn, players, deck, top_of_discard_pile)
+        players_turn = ((players_turn + 1) % (len(players)))
 
 
 def get_information():
@@ -33,7 +34,7 @@ def initial_set_up(players):
     for i in range(len(players)):
         player_hand = players[i][1]
 
-        for i in range(7):
+        for j in range(7):
             player_hand.append(deck.pop(0))
 
         players[i][1] = player_hand
@@ -57,7 +58,7 @@ def player_turn(playerNo, players, deck, discard):
     hand = players[playerNo][1]
 
     print()
-    print("It is", name,"'s turn")
+    print("It is",name,"'s turn")
     print_player_hand(hand)
     print("You must either take a card from the top of the deck or the card on the top of the discard pile")
     print("The current card on top of the discard pile is ", discard)
