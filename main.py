@@ -7,24 +7,40 @@ deck = ["1S", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS",
 
 
 def play_game():
-    deck, player_hand, top_of_discard_pile = initial_set_up()  
-    print_player_hand(player_hand)
+    players_turn = 0
+
+    players = get_information()
+    deck, players, top_of_discard_pile = initial_set_up(players)  
 
     while True:  
-        deck, player_hand, top_of_discard_pile = player_turn(1, player_hand, deck, top_of_discard_pile)
+        deck, players, top_of_discard_pile = player_turn(player_turn, players, deck, top_of_discard_pile)
 
 
-def initial_set_up():
-    player_hand = []
+def get_information():
+    players = []
+    print("Please enter the number of players for this game")
+    no_of_players = int(input("-> "))
+    for i in range(no_of_players):
+        print("Player ", (i+1),"please enter your name")
+        name = input("-> ")
+        players.append([name, []])
+    return players
 
+
+def initial_set_up(players):
     random.shuffle(deck)
 
-    for i in range(7):
-        player_hand.append(deck.pop(0))
+    for i in range(len(players)):
+        player_hand = players[i][1]
+
+        for i in range(7):
+            player_hand.append(deck.pop(0))
+
+        players[i][1] = player_hand
 
     top_of_discard_pile = deck.pop(0)
 
-    return deck, player_hand, top_of_discard_pile
+    return deck, players, top_of_discard_pile
 
 
 def print_player_hand(cards):
@@ -36,9 +52,12 @@ def print_player_hand(cards):
 
 
 # add validation for where to pick card up from and if the discarded card is a valid card
-def player_turn(playerNo, hand, deck, discard):
+def player_turn(playerNo, players, deck, discard):
+    name = players[playerNo][0]
+    hand = players[playerNo][1]
+
     print()
-    print("It is player", playerNo,"'s turn")
+    print("It is", name,"'s turn")
     print_player_hand(hand)
     print("You must either take a card from the top of the deck or the card on the top of the discard pile")
     print("The current card on top of the discard pile is ", discard)
@@ -62,7 +81,9 @@ def player_turn(playerNo, hand, deck, discard):
             hand.remove(discard)
             break
 
-    return deck, hand, discard
+    players[playerNo] = [name, hand]
+
+    return deck, players, discard
 
 
 
