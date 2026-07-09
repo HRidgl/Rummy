@@ -112,9 +112,11 @@ def check_for_sets(hand):
                     print("You have 3 of the same number")
                     card_set = hand[i] + " " + hand[j] + " " + hand[k]
                     print(card_set)
-                    sets.append(card_set)
-                    hand = remove_card_set_from_hand(hand, i, j, k)
-                    check_for_sets(hand)
+                    decision = input("Do you want to lay down this set of 3? (Y/N)").upper()
+                    if decision == "Y":
+                        sets.append(card_set)
+                        hand = remove_card_set_from_hand(hand, i, j, k)
+                        check_for_sets(hand)
     return hand
     
 
