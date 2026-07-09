@@ -114,7 +114,7 @@ def check_for_sets(hand):
                     print(card_set)
                     sets.append(card_set)
                     hand = remove_card_set_from_hand(hand, i, j, k)
-                    return hand
+                    check_for_sets(hand)
     return hand
     
 
