@@ -8,6 +8,9 @@ deck = ["1S", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS",
         "1H", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "10H", "JH", "QH", "KH",]
 
 
+sets = []
+
+
 def play_game():
     players_turn = 0
 
@@ -76,6 +79,9 @@ def player_turn(playerNo, players, deck, discard):
 
     print("Card added to hand")
     print_player_hand(hand)
+
+    check_for_sets(hand)
+
     print("You must now choose a card to discard")
     discard = input("-> ")
     
@@ -84,22 +90,33 @@ def player_turn(playerNo, players, deck, discard):
             hand.remove(discard)
             break
 
-    check_for_sets(hand)
-
     players[playerNo] = [name, hand]
 
     return deck, players, discard
 
 
-# Distinguish between 1 and 10
+def remove_card_set_from_hand(hand, i, j, k):
+    hand.pop(k)
+    hand.pop(j)
+    hand.pop(i)
+    return hand
+
+
+
+# TODO: distinguish between 1 and 10
 def check_for_sets(hand):
     for i in range(len(hand)):
         for j in range(i + 1, len(hand)):
             for k in range(j + 1, len(hand)):
                 if (hand[i])[0] == (hand[j])[0] == (hand[k])[0]:
-                    print("You have at least 3 of the same number")
-                    print(hand[i], hand[j], hand[k])
-
+                    print("You have 3 of the same number")
+                    card_set = hand[i] + " " + hand[j] + " " + hand[k]
+                    print(card_set)
+                    sets.append(card_set)
+                    hand = remove_card_set_from_hand(hand, i, j, k)
+                    return hand
+    return hand
+    
 
 
 play_game()
