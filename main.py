@@ -1,7 +1,11 @@
 # Importing the random module so that I can shuffle the deck of cards at the beginning of the game
 import random
 
-
+## TODO: VALIDATION USING ENUMS
+## TODO: Distinguish between 1 and 10
+## TODO: Break larger functions down into smaller ones
+## TODO: Add validation for where to pick card up from and if the discarded card is a valid card
+## TODO: RUMMY situation
 
 # A list of all the decks from the 4 suits in a deck of cards
 deck = ["1S", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS",
@@ -10,11 +14,11 @@ deck = ["1S", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS",
         "1H", "2H", "3H", "4H", "5H", "6H", "7H", "8H", "9H", "10H", "JH", "QH", "KH",]
 
 
-
+# An array which will lay all sets placed down by players 
 sets = []
 
 
-
+# Main game loop that calls relevant functions
 def play_game():
     players_turn = 0
 
@@ -30,7 +34,7 @@ def play_game():
         players_turn = ((players_turn + 1) % (len(players)))
 
 
-
+# Gets all players to be named and added to the players array
 def get_information():
     players = []
     print("Please enter the number of players for this game")
@@ -42,7 +46,7 @@ def get_information():
     return players
 
 
-
+# Shuffles the deck, deals 7 cards to each player and flips the top card of the deck over to be the discard pile
 def initial_set_up(players):
     random.shuffle(deck)
 
@@ -60,7 +64,7 @@ def initial_set_up(players):
     return deck, players, top_of_discard_pile
 
 
-
+# Outputs the cards in a player's hand in a readable, user-friendly way
 def print_player_hand(cards):
     hand = ""
     for i in range(len(cards)):
@@ -69,8 +73,7 @@ def print_player_hand(cards):
     print(hand)
 
 
-
-# add validation for where to pick card up from and if the discarded card is a valid card
+# This function represents a standard player turn and allows the user to perform all relevant actions on their turn
 def player_turn(playerNo, players, deck, discard):
     name = players[playerNo][0]
     hand = players[playerNo][1]
@@ -110,7 +113,7 @@ def player_turn(playerNo, players, deck, discard):
     return deck, players, discard
 
 
-
+# Removes the cards from a player's hand which form a set using the pop method
 def remove_card_set_from_hand(hand, i, j, k):
     hand.pop(k)
     hand.pop(j)
@@ -118,8 +121,7 @@ def remove_card_set_from_hand(hand, i, j, k):
     return hand
 
 
-
-# TODO: distinguish between 1 and 10
+# Iterates over the cards in a player's
 def check_for_sets(players, playerNo):
     hand = players[playerNo][1]
     for i in range(len(hand)):
@@ -140,7 +142,7 @@ def check_for_sets(players, playerNo):
     return hand
 
 
-
+# Returns a formatted string which represents all cards in a card set
 def format_card_set(card_set):
     card_set_string = ""
     for i in range(len(card_set)):
@@ -149,7 +151,7 @@ def format_card_set(card_set):
     return card_set_string
 
 
-
+# Allows the user to lay a card from their hand onto a corresponding set
 def lay_card_on_set(hand):
     set_no = int(input(f"Which set do you want to lay on? "))
     card_set = sets[set_no-1]
@@ -162,7 +164,7 @@ def lay_card_on_set(hand):
     return hand
 
         
-
+# Outputs all the existing global sets and asks the user if they want to lay down on a set
 def lay_on_sets(player):
     print()
     print("* EXISTING GLOBAL SETS *")
@@ -177,6 +179,7 @@ def lay_on_sets(player):
         lay_on_sets(player)
     return player
 
+# --- MAIN ---
 
 play_game()
 
