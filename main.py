@@ -36,14 +36,16 @@ def get_information():
 
 def initial_set_up(players):
     random.shuffle(deck)
-
+    '''
     for i in range(len(players)):
         player_hand = players[i][1]
 
         for j in range(7):
             player_hand.append(deck.pop(0))
 
-        players[i][1] = player_hand
+        players[i][1] = player_hand'''
+
+    players[0][1] = ["5S", "5H", "5C", "5D", "8S", "9S"]
 
     top_of_discard_pile = deck.pop(0)
 
@@ -83,7 +85,7 @@ def player_turn(playerNo, players, deck, discard):
 
     check_for_sets(players, playerNo)
 
-    lay_on_sets(player)
+    players[playerNo] = lay_on_sets(players[playerNo])
 
     print("You must now choose a card to discard")
     discard = input("-> ")
@@ -130,14 +132,15 @@ def print_card_set(card_set):
     print(card_set[0] + " " + card_set[1] + " " + card_set[2])
 
 
-def lay_card_on_set(card):
+def lay_card_on_set(hand, card):
     for i in range(len(sets)):
         card_set = sets[i]
         if (card_set[0])[0] == (card_set[1])[0] == (card_set[2])[0] == card[0]:
-            decision = input("Do you want to lay",card,"down on a set? (Y/N): ")
+            decision = input(f"Do you want to lay {card} down on a set? (Y/N): ")
             if decision == "Y":
                 card_set.append(card)
                 sets[i] = card_set
+                hand.remove(card)
 
         
 
@@ -146,12 +149,13 @@ def lay_on_sets(player):
     for i in range(len(sets)):
         print(i, ") ", sets[i])
     print()
-    decision = input("Do you want to lay down on a set? (Y/N): ")
-    if decision == True:
+    decision = input("Do you want to lay down on a set? (Y/N): ").upper()
+    if decision == "Y":
         print()
         print_player_hand(player[1])
         card = input("Which card do you want to lay down? ")
-        lay_card_on_set(card)
+        lay_card_on_set(player[1], card)
+    return player
 
 
 play_game()
@@ -160,3 +164,4 @@ play_game()
 
 # https://www.w3schools.com/python/ref_random_shuffle.asp
 # https://www.w3schools.com/python/ref_list_pop.asp
+# https://www.w3schools.com/python/ref_list_remove.asp
