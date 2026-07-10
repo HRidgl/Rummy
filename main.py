@@ -116,7 +116,7 @@ def check_for_sets(players, playerNo):
                 if (hand[i])[0] == (hand[j])[0] == (hand[k])[0]:
                     print("You have 3 of the same number")
                     card_set = [hand[i], hand[j], hand[k]]
-                    print_card_set(card_set)
+                    print(format_card_set(card_set))
                     decision = input("Do you want to lay down this set of 3? (Y/N): ").upper()
                     if decision == "Y":
                         sets.append(card_set)
@@ -128,18 +128,18 @@ def check_for_sets(players, playerNo):
     return hand
 
 
-def print_card_set(card_set):
-    print(card_set[0] + " " + card_set[1] + " " + card_set[2])
+def format_card_set(card_set):
+    return (card_set[0] + " " + card_set[1] + " " + card_set[2])
 
 
 def lay_card_on_set(hand, card):
-    for i in range(len(sets)):
-        card_set = sets[i]
+    for i in range(1, len(sets)+1):
+        card_set = sets[i-1]
         if (card_set[0])[0] == (card_set[1])[0] == (card_set[2])[0] == card[0]:
             decision = input(f"Do you want to lay {card} down on this set? (Y/N): ")
             if decision == "Y":
                 card_set.append(card)
-                sets[i] = card_set
+                sets[i-1] = card_set
                 hand.remove(card)
     return hand
 
@@ -148,8 +148,8 @@ def lay_card_on_set(hand, card):
 def lay_on_sets(player):
     print()
     print("* EXISTING SETS *")
-    for i in range(len(sets)):
-        print(i, ") ", sets[i])
+    for i in range(1, len(sets)+1):
+        print(i,") ",format_card_set(sets[i-1]))
     print()
     decision = input("Do you want to lay down on a set? (Y/N): ").upper()
     if decision == "Y":
