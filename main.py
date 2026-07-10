@@ -129,25 +129,30 @@ def check_for_sets(players, playerNo):
 
 
 def format_card_set(card_set):
-    return (card_set[0] + " " + card_set[1] + " " + card_set[2])
+    card_set_string = ""
+    for i in range(len(card_set)):
+        card_set_string += card_set[i] 
+        card_set_string += " "
+    return card_set_string
 
 
-def lay_card_on_set(hand, card):
-    for i in range(1, len(sets)+1):
-        card_set = sets[i-1]
-        if (card_set[0])[0] == (card_set[1])[0] == (card_set[2])[0] == card[0]:
-            decision = input(f"Do you want to lay {card} down on this set? (Y/N): ")
-            if decision == "Y":
-                card_set.append(card)
-                sets[i-1] = card_set
-                hand.remove(card)
+
+def lay_card_on_set(hand):
+    set_no = int(input(f"Which set do you want to lay on? "))
+    card_set = sets[set_no-1]
+    card = input(f"Which card do you want to lay on set {set_no}? ")
+    if (card_set[0])[0] == (card_set[1])[0] == (card_set[2])[0] == card[0]:
+        card_set.append(card)
+        sets[set_no-1] = card_set
+        hand.remove(card)
+        print(f"{card} added to set {set_no}")
     return hand
 
         
 
 def lay_on_sets(player):
     print()
-    print("* EXISTING SETS *")
+    print("* EXISTING GLOBAL SETS *")
     for i in range(1, len(sets)+1):
         print(i,") ",format_card_set(sets[i-1]))
     print()
@@ -155,8 +160,7 @@ def lay_on_sets(player):
     if decision == "Y":
         print()
         print_player_hand(player[1])
-        card = input("Which card do you want to lay down? ")
-        player[1] = lay_card_on_set(player[1], card)
+        player[1] = lay_card_on_set(player[1])
         lay_on_sets(player)
     return player
 
