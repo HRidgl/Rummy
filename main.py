@@ -1,6 +1,7 @@
 # Importing the random module so that I can shuffle the deck of cards at the beginning of the game
 import random
 
+
 # A list of all the decks from the 4 suits in a deck of cards
 deck = ["1S", "2S", "3S", "4S", "5S", "6S", "7S", "8S", "9S", "10S", "JS", "QS", "KS",
         "1C", "2C", "3C", "4C", "5C", "6C", "7C", "8C", "9C", "10C", "JC", "QC", "KC",
@@ -29,7 +30,7 @@ def get_information():
     for i in range(no_of_players):
         print("Player ", (i+1),"please enter your name")
         name = input("-> ")
-        players.append([name, []])
+        players.append([name, [], False])
     return players
 
 
@@ -80,7 +81,9 @@ def player_turn(playerNo, players, deck, discard):
     print("Card added to hand")
     print_player_hand(hand)
 
-    check_for_sets(hand)
+    check_for_sets(players, playerNo)
+
+    lay_on_sets(player)
 
     print("You must now choose a card to discard")
     discard = input("-> ")
@@ -102,23 +105,53 @@ def remove_card_set_from_hand(hand, i, j, k):
     return hand
 
 
-
 # TODO: distinguish between 1 and 10
-def check_for_sets(hand):
+def check_for_sets(players, playerNo):
+    hand = players[playerNo][1]
     for i in range(len(hand)):
         for j in range(i + 1, len(hand)):
             for k in range(j + 1, len(hand)):
                 if (hand[i])[0] == (hand[j])[0] == (hand[k])[0]:
                     print("You have 3 of the same number")
-                    card_set = hand[i] + " " + hand[j] + " " + hand[k]
-                    print(card_set)
-                    decision = input("Do you want to lay down this set of 3? (Y/N)").upper()
+                    card_set = [hand[i], hand[j], hand[k]]
+                    print_card_set(card_set)
+                    decision = input("Do you want to lay down this set of 3? (Y/N): ").upper()
                     if decision == "Y":
                         sets.append(card_set)
                         hand = remove_card_set_from_hand(hand, i, j, k)
-                        check_for_sets(hand)
+                        check_for_sets(players, playerNo)
+                        if players[playerNo][2] == False:
+                            players[playerNo][2] = True
+                        print_player_hand(hand)
     return hand
-    
+
+
+def print_card_set(card_set):
+    print(card_set[0] + " " + card_set[1] + " " + card_set[2])
+
+
+def lay_card_on_set(card):
+    for i in range(len(sets)):
+        card_set = sets[i]
+        if (card_set[0])[0] == (card_set[1])[0] == (card_set[2])[0] == card[0]:
+            decision = input("Do you want to lay",card,"down on a set? (Y/N): ")
+            if decision == "Y":
+                card_set.append(card)
+                sets[i] = card_set
+
+        
+
+def lay_on_sets(player):
+    print()
+    for i in range(len(sets)):
+        print(i, ") ", sets[i])
+    print()
+    decision = input("Do you want to lay down on a set? (Y/N): ")
+    if decision == True:
+        print()
+        print_player_hand(player[1])
+        card = input("Which card do you want to lay down? ")
+        lay_card_on_set(card)
 
 
 play_game()
